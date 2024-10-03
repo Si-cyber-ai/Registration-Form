@@ -1,6 +1,6 @@
-let userForm = document.getElementById("user-form");
+et userForm = document.getElementById("user-form");
 
-// Data from localStorage
+// Data 
 const retrieveEntries = () => {
   let entries = localStorage.getItem("user-entries");
   if (entries) {
@@ -10,41 +10,42 @@ const retrieveEntries = () => {
   }
   return entries;
 };
+
 let userEntries = retrieveEntries();
+
 // Display entries
 const displayEntries = () => {
-    const tableEntries = userEntries.map((entry) => {
-      const nameCell = <td>${entry.name}</td>;
-      const emailCell = <td>${entry.email}</td>;
-      const passwordCell = <td>${entry.password}</td>;
-      const dobCell = <td>${entry.dob}</td>;
-      const acceptTermsCell = <td>${entry.acceptedTermsAndConditions ? 'true' : 'false'}</td>;
-  
-      const row = <tr>${nameCell} ${emailCell} ${passwordCell} ${dobCell} ${acceptTermsCell}</tr>;
-      return row;
-    }).join("\n");
-  
-    document.getElementById("user-entries").innerHTML = tableEntries;
-  };
+  const tableEntries = userEntries.map((entry) => {
+    const nameCell = <td>${entry.name}</td>;
+    const emailCell = <td>${entry.email}</td>;
+    const passwordCell = <td class="text-center">${entry.password}</td>;
+    const dobCell = <td>${entry.dob}</td>;
+    const acceptTermsCell = <td>${entry.acceptedTermsAndConditions ? 'true' : 'false'}</td>;
+    const row = <tr>${nameCell} ${emailCell} ${passwordCell} ${dobCell} ${acceptTermsCell}</tr>;
+    return row;
+  }).join("\n");
 
-//calculate age based on DOB
+  document.getElementById("user-entries").innerHTML = tableEntries;
+};
+// Validate email format
+const isValidEmail = (email) => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+  return emailPattern.test(email);
+};
+// Calculate age based on DOB
 const calculateAge = (dob) => {
   const birthDate = new Date(dob);
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
-  // Adjust if the birth date hasn't occurred this year yet
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
   return age;
 };
 
-// Save data and validate age
 const saveUserForm = (event) => {
   event.preventDefault();
-
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value; 
   const password = document.getElementById("password").value;
@@ -58,6 +59,11 @@ const saveUserForm = (event) => {
     return;
   }
 
+  // Email validation
+  if (!isValidEmail(email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
   const entry = {
     name,
     email,
@@ -68,6 +74,7 @@ const saveUserForm = (event) => {
   userEntries.push(entry);
   localStorage.setItem("user-entries", JSON.stringify(userEntries));
   displayEntries();
+  userForm.reset();
 };
 
 userForm.addEventListener("submit", saveUserForm);
