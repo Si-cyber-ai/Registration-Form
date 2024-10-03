@@ -1,4 +1,4 @@
-et userForm = document.getElementById("user-form");
+let userForm = document.getElementById("user-form");
 
 // Data 
 const retrieveEntries = () => {
