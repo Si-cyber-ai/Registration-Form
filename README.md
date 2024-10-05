@@ -16,10 +16,6 @@ A dynamic, responsive registration form built with **HTML**, **JavaScript**, and
 ## Live Demo
 [Try it here!](https://si-cyber-ai.github.io/Registration-Form/)
 
-## Preview
-
-![Form Preview](download.jpeg)
-
 ## Technologies Used
 
 - **HTML5**: For the structure of the form.
